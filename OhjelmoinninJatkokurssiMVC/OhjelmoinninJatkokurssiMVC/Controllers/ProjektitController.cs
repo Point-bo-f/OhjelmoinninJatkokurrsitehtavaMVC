@@ -184,7 +184,7 @@ namespace OhjelmoinninJatkokurssiMVC.Controllers
 
             return Json(json, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult GetSingleHenkilo(int id)
+        public JsonResult GetSingleProjekti(int id)
         {
             AsiakastietokantaEntities entities = new AsiakastietokantaEntities();
 
