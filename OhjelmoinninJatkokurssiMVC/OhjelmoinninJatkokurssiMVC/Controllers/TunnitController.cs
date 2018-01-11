@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace OhjelmoinninJatkokurssiMVC.Controllers
 {
-    public class ProjektitController : Controller
+    public class TunnitController : Controller
     {
         // GET: Customer
         public ActionResult Index()
@@ -18,7 +18,7 @@ namespace OhjelmoinninJatkokurssiMVC.Controllers
             ViewBag.OmaTieto = "ABC123";
 
             AsiakastietokantaEntities entities = new AsiakastietokantaEntities();
-            List<Projektit> model = entities.Projektit.ToList();
+            List<Tunnit> model = entities.Tunnit.ToList();
             entities.Dispose();
 
             return View(model);
@@ -37,13 +37,16 @@ namespace OhjelmoinninJatkokurssiMVC.Controllers
         public JsonResult GetList()
         {
             AsiakastietokantaEntities entities = new AsiakastietokantaEntities();
-            //List<Customer> model = entities.Customers.ToList();
+           // List<Tunnit> model = entities.Tunnit.ToList();
 
-            var model = (from p in entities.Projektit
-                         select new
+            var model = (from t in entities.Tunnit
+                        select new
                          {
-                             ProjektiID = p.ProjektiID,
-                             Projektinimi = p.Projektinimi,                       
+                             TuntiID = t.TuntiID,
+                             ProjektiID = t.ProjektiID,
+                             HenkiloID = t.HenkiloID,
+                             Pvm = t.Pvm,
+                             Projektitunnit = t.Projektitunnit
                          }).ToList();
 
             string json = JsonConvert.SerializeObject(model);
@@ -55,15 +58,18 @@ namespace OhjelmoinninJatkokurssiMVC.Controllers
             return Json(json, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult GetSingleProjekti(string id)
+        public JsonResult GetSingleTunti(string id)
         {
             AsiakastietokantaEntities entities = new AsiakastietokantaEntities();
-            var model = (from p in entities.Projektit
-                         where p.ProjektiID.ToString() == id
+            var model = (from t in entities.Tunnit
+                         where t.TuntiID.ToString() == id
                          select new
                          {
-                             ProjektiID = p.ProjektiID,
-                             Projektinimi = p.Projektinimi,                            
+                             TuntiID = t.TuntiID,
+                             ProjektiID = t.ProjektiID,
+                             HenkiloID = t.HenkiloID,
+                             Pvm = t.Pvm,
+                             Projektitunnit = t.Projektitunnit
                          }).FirstOrDefault();
 
             string json = JsonConvert.SerializeObject(model);
@@ -72,36 +78,43 @@ namespace OhjelmoinninJatkokurssiMVC.Controllers
             return Json(json, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult Update(Projektit proj)
+        public ActionResult Update(Tunnit tunn)
         {
             AsiakastietokantaEntities entities = new AsiakastietokantaEntities();
-            string id = proj.ProjektiID.ToString();
+            string id = tunn.TuntiID.ToString();
 
             bool OK = false;
 
             // onko kyseessä muokkaus vai uuden lisääminen?
-            if (id == "(uusi)")            {
+            if (id == "(uusi)")
+            {
                 // kyseessä on uuden asiakkaan lisääminen, kopioidaan kentät
-                Projektit dbItem = new Projektit()
+                Tunnit dbItem = new Tunnit()
                 {
-                   ProjektiID  = proj.ProjektiID,
-                   Projektinimi = proj.Projektinimi,
+                    TuntiID = tunn.TuntiID,
+                    ProjektiID = tunn.ProjektiID,
+                    HenkiloID = tunn.HenkiloID,
+                    Pvm = tunn.Pvm,
+                    Projektitunnit = tunn.Projektitunnit
                 };
 
                 // tallennus tietokantaan
-                entities.Projektit.Add(dbItem);
+                entities.Tunnit.Add(dbItem);
                 entities.SaveChanges();
                 OK = true;
             }
             else
             {
                 // muokkaus, haetaan id:n perusteella riviä tietokannasta
-                Projektit dbItem = (from p in entities.Projektit
-                                    where p.ProjektiID.ToString() == id
-                                    select p).FirstOrDefault();
+                Tunnit dbItem = (from t in entities.Tunnit
+                                    where t.TuntiID.ToString() == id
+                                    select t).FirstOrDefault();
                 if (dbItem != null)
                 {
-                    dbItem.Projektinimi = proj.Projektinimi;
+                    dbItem.ProjektiID = tunn.ProjektiID;
+                    dbItem.HenkiloID = tunn.HenkiloID;
+                    dbItem.Pvm = tunn.Pvm;
+                    dbItem.Projektitunnit = tunn.Projektitunnit;
 
 
                     //tallennus tietokantaan
@@ -120,13 +133,13 @@ namespace OhjelmoinninJatkokurssiMVC.Controllers
 
             // etsitään id:n perusteella asiakasrivi kannasta
             bool OK = false;
-            Projektit dbItem = (from p in entities.Projektit
-                                where p.ProjektiID.ToString() == id
-                               select p).FirstOrDefault();
+            Tunnit dbItem = (from t in entities.Tunnit
+                                where t.ProjektiID.ToString() == id
+                                select t).FirstOrDefault();
             if (dbItem != null)
             {
                 // tietokannasta poisto
-                entities.Projektit.Remove(dbItem);
+                entities.Tunnit.Remove(dbItem);
                 entities.SaveChanges();
                 OK = true;
             }

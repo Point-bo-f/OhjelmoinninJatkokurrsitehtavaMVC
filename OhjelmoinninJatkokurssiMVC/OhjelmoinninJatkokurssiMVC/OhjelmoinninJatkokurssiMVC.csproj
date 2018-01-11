@@ -153,6 +153,7 @@
     <Compile Include="Controllers\HenkilotController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProjektitController.cs" />
+    <Compile Include="Controllers\TunnitController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -238,6 +239,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Henkilot\Index.cshtml" />
     <Content Include="Views\Projektit\Index.cshtml" />
+    <Content Include="Views\Tunnit\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
