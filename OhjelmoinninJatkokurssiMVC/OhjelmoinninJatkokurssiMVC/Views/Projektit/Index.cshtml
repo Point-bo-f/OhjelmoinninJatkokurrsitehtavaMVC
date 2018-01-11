@@ -31,7 +31,7 @@
                         var projekti = JSON.parse(json);
                         alert(projektiId)
                         // kopioidaan tiedot ikkunaan
-                        $("#projektiModal_ProjId").val(projekti.ProjektiID);
+                        $("#projektiModal_ProjektiID").val(projekti.ProjektiID);
                         $("#projektiModal_Projektinimi").val(projekti.Projektinimi);
 
                         // näytetään ikkuna
@@ -48,7 +48,7 @@
                     var ok = confirm("haluatko varmasti poistaa projektitiedot " + projektiID + "?");
 
                     if (ok == true) {
-                        $.getJSON("/projekti/delete/" + projektiID, null, function (status) {
+                        $.getJSON("/projektit/delete/" + projektiID, null, function (status) {
                             if (status == true) {
                                 alert("Projektitiedot on poistettu!");
                                 päivitäProjektilistaus();
@@ -67,7 +67,7 @@
 
             $("#lisaaUusiProjektiButton").click(function () {
 
-                $("#projektiModal_ProjektiID").val("(Uusi)");
+                $("#projektiModal_ProjektiID").val("(uusi)");
                 $("#projektiModal_Projektinimi").val("");
 
                 $("#projektiModalTitle").text("Lisää uusi projekti");
@@ -102,7 +102,7 @@
 
 }
 <h2>Projektit</h2>
-<button class="btn btn-primary" id="lisaaUusiButton">Lisää uusi</button>
+<button class="btn btn-primary" id="lisaaUusiProjektiButton">Lisää uusi</button>
 
 <table class="table table-striped" id="projektiList">
 
